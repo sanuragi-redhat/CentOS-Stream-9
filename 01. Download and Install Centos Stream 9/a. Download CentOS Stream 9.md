@@ -6,3 +6,11 @@ Download the CentOS Stream 9 ISO file for installation from the following site.
 => http://mirror.stream.centos.org/9-stream/BaseOS/x86_64/iso/
 
 
+![alt text](../.photos/download.png)
+
+
+
+
+    blackhawk@thinkpad-e14:~/Downloads$ ls CentOS-Stream-9-x86_64-dvd.iso 
+    CentOS-Stream-9-x86_64-dvd.iso
+    
