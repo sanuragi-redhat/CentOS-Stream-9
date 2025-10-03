@@ -7,54 +7,56 @@ Create a private key for client and a public key for server to do it.
 
     # create key-pair
     [redhat@centos-stream9-n1 ~]$ ssh-keygen
-    
-    Generating public/private rsa key pair.
-    Enter file in which to save the key (/home/cent/.ssh/id_rsa):   # Enter or input changes if you want
-    Created directory '/home/cent/.ssh'.
-    Enter passphrase (empty for no passphrase):   # set passphrase (if set no passphrase, Enter with empty)
-    Enter same passphrase again:
-    Your identification has been saved in /home/cent/.ssh/id_rsa
-    Your public key has been saved in /home/cent/.ssh/id_rsa.pub
+    Generating public/private ed25519 key pair.
+    Enter file in which to save the key (/home/redhat/.ssh/id_ed25519): 
+    Created directory '/home/redhat/.ssh'.
+    Enter passphrase for "/home/redhat/.ssh/id_ed25519" (empty for no passphrase): 
+    Enter same passphrase again: 
+    Your identification has been saved in /home/redhat/.ssh/id_ed25519
+    Your public key has been saved in /home/redhat/.ssh/id_ed25519.pub
     The key fingerprint is:
-    SHA256:yYOKaIcT25Jd0ZaOOYLa+rgrU0c/M/rVmJx4q4MVZB0 cent@centos-stream9-n1.ocp2.redhat-workshop.in
+    SHA256:6oxHR3YzPvDbrYHbbRoeFS3HWRqsjhmuvRMaFhnDWTE redhat@centos-stream9-n1.ocp2.redhat-workshop.in
     The key's randomart image is:
+
     .....
     .....
     
     [redhat@centos-stream9-n1 ~]$ ll ~/.ssh
-    
     total 8
-    -rw-------. 1 cent cent 2655 Jan  7 19:07 id_rsa
-    -rw-r--r--. 1 cent cent  575 Jan  7 19:07 id_rsa.pub
+    -rw-------. 1 redhat redhat 452 Oct  4 02:47 id_ed25519
+    -rw-r--r--. 1 redhat redhat 130 Oct  4 02:47 id_ed25519.pub
     
-    [redhat@centos-stream9-n1 ~]$ mv ~/.ssh/id_rsa.pub ~/.ssh/authorized_keys
+ 
 
-[2] 	Transfer the private key created on the Server to a Client, then it's possible to login with Key-Pair authentication.
-    [cent@centos-stream9-n1 ~]$ mkdir ~/.ssh
+[2] 	Transfer the public key  created on the Server to a Client, then it's possible to login with Key-Pair authentication.
     
-    [cent@centos-stream9-n1 ~]$ chmod 700 ~/.ssh
-# transfer the private key to the local ssh directory
-
-    [cent@centos-stream9-n1 ~]$ scp redhat@centos-stream9-n1.ocp2.redhat-workshop.in:/home/cent/.ssh/id_rsa ~/.ssh/
+    [redhat@centos-stream9-n2 ~]$ mkdir ~/.ssh
+    [redhat@centos-stream9-n2 ~]$ chmod 700 ~/.ssh
+    [redhat@centos-stream9-n2 ~]$ touch ~/.ssh/authorized_keys
     
-    redhat@centos-stream9-n1.ocp2.redhat-workshop.in's password:
-    id_rsa                                        100% 1876   193.2KB/s   00:00
+    # transfer the public key to client machine.
+    [redhat@centos-stream9-n1 ~]$ scp -r ~/.ssh/id_ed25519.pub redhat@centos-stream9-n2:~/.ssh/authorized_keys 
+    The authenticity of host 'centos-stream9-n2 (192.168.1.157)' can't be established.
+    ED25519 key fingerprint is SHA256:GqerXj8IymGlujYdbW9E2dys5apMIXiGYiVmUusuaSM.
+    This key is not known by any other names.
+    Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+    Warning: Permanently added 'centos-stream9-n2' (ED25519) to the list of known hosts.
+    redhat@centos-stream9-n2's password: 
+    id_ed25519.pub                                100%  130   742.6KB/s   00:00 
+        
+    [redhat@centos-stream9-n1 ~]$ ssh redhat@centos-stream9-n2 
+    Last login: Sat Oct  4 02:49:43 2025
+    [redhat@centos-stream9-n2 ~]$ 
     
-    [cent@centos-stream9-n1 ~]$ ssh redhat@centos-stream9-n1.ocp2.redhat-workshop.in
-    
-Enter passphrase for key '/home/cent/.ssh/id_rsa':   # passphrase if you set
-
-    [redhat@centos-stream9-n1 ~]$   # logined
 
 [3] 	If you set [PasswordAuthentication no], it's more secure.
 
-    [root@dlp ~]# vi /etc/ssh/sshd_config
+    [root@centos-stream9-n1 ~]# vi /etc/ssh/sshd_config
     # line 65 : change to [no]
-    
     PasswordAuthentication no
     # line 69 : if it's enabled, change it to [no], too
     
     # Change to no to disable s/key passwords
     #KbdInteractiveAuthentication yes
     KbdInteractiveAuthentication no
-    [root@dlp ~]# systemctl restart sshd 
+    [root@centos-stream9-n1 ~]# systemctl restart sshd 
