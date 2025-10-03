@@ -1,4 +1,4 @@
-##  Configure SSH Server to operate servers from remote computers. 
+###  Configure SSH Server to operate servers from remote computers. 
 
 [1] OpenSSH is already installed by default even if you installed CentOS Stream with [Minimal] Install, so it does not need to install new packages.
 You can login with Password Authentication by default.
@@ -37,7 +37,7 @@ If you like to improve the security, you should change PermitRootLogin parameter
 
 [5] 	It's possible to execute commands on remote Host with SSH like follows.
 
-# for example, run [cat /etc/passwd]
+    # for example, run [cat /etc/passwd]
     [redhat@centos-stream9-n2 ~]$ ssh redhat@centos-stream9-n2 "cat /etc/passwd"
     redhat@centos-stream9-n2's password: password
     root:x:0:0:root:/root:/bin/bash
