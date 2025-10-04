@@ -39,7 +39,7 @@ Discovery LUN.
     192.168.1.156:3260,1 iqn.2025-09.redhat-workshop.centos-stream9:n1.target01
 
 
-confirm status after discovery
+Confirm status after discovery
 
     [root@node01 ~]# iscsiadm -m node -o show 
     # BEGIN RECORD 6.2.1.11
@@ -55,13 +55,17 @@ confirm status after discovery
     node.conn[0].iscsi.OFMarker = No
     # END RECORD
     
-login to the target
+Login to the target
 
     [root@centos-stream9-n2 ~]# iscsiadm -m node --login -T  iqn.2025-09.redhat-workshop.centos-stream9:n1.target01 -p 192.168.1.156 
     Login to [iface: default, target: iqn.2025-09.redhat-workshop.centos-stream9:n1.target01, portal: 192.168.1.156,3260] successful.
 
+Enable Autologin for the Node
 
-confirm the established session
+    [root@centos-stream9-n2 ~]# iscsiadm -m node -T iqn.2025-09.redhat-workshop.centos-stream9:n1.target01 -p 192.168.1.156 --op update -n node.startup -v automatic
+
+
+Confirm the established session
 
     [root@centos-stream9-n2 ~]# iscsiadm -m session -o show 
     tcp: [2] 192.168.1.156:3260,1 iqn.2025-09.redhat-workshop.centos-stream9:n1.target01 (non-flash)
