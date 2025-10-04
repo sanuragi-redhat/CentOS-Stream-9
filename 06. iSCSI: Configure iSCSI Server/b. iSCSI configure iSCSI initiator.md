@@ -38,7 +38,6 @@ Discovery LUN.
     [root@centos-stream9-n2 ~]# iscsiadm -m discovery -t sendtargets -p 192.168.1.156
     192.168.1.156:3260,1 iqn.2025-09.redhat-workshop.centos-stream9:n1.target01
 
-
 Confirm status after discovery
 
     [root@node01 ~]# iscsiadm -m node -o show 
@@ -63,6 +62,14 @@ Login to the target
 Enable Autologin for the Node
 
     [root@centos-stream9-n2 ~]# iscsiadm -m node -T iqn.2025-09.redhat-workshop.centos-stream9:n1.target01 -p 192.168.1.156 --op update -n node.startup -v automatic
+    [root@centos-stream9-n2 ~]# iscsiadm -m node -T iqn.2025-09.redhat-workshop.centos-stream9:n1.target01 -p 192.168.1.156  --op update -n node.conn[0].startup -v automatic
+
+To confirm that autologin is enabled:
+
+    [root@centos-stream9-n2 ~]# iscsiadm -m node -T iqn.2025-09.redhat-workshop.centos-stream9:n1.target01 -p 192.168.1.156| grep startup
+    node.startup = automatic
+    node.conn[0].startup = automatic
+
 
 
 Confirm the established session
